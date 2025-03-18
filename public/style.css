@@ -24,6 +24,7 @@ body {
     align-items: center;
 }
 
+/* Notification */
 .outer-container {
     opacity: 0; 
     animation: pop-scaleY 0.5s ease-out 1s forwards;
