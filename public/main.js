@@ -44,10 +44,13 @@ fetch("/get-data")
 
 function updatePoints(completed, amount, id) {
     let pointsTextLabel = document.getElementById("points")
-
+    let tr =  document.getElementById(id).parentElement.parentElement;
+    let tdElements = tr.children;   
+    
     if (completed) return; // Prevent user from the udpating data again
 
     pointsTextLabel.innerText = `${amount} pts`;
+    tdElements[2].textContent = "Completed";
 
     const data = {
         amount: amount,
