@@ -8,6 +8,7 @@ A to-do list with a point system.
   - **`html/`** - Stores other HTML files.
   - **`js/`** - Contains JavaScript files for front-end.
 - **`app.js`** - The main Node.js file that handles backend logic.
+- **`mongo.js`** - Contains auxiliary functions for handling Mongodb connection and CRUD operations.
 
 ### How to run:
 1. Run: `node app.js`
