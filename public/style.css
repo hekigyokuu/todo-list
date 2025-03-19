@@ -24,10 +24,9 @@ body {
     align-items: center;
 }
 
-/* Notification */
 .outer-container {
     opacity: 0; 
-    animation: pop-scaleY 0.5s ease-out 1s forwards;
+    animation: pop-scaleY 0.3s ease-out .5s forwards;
 
     background: var(--outer-bg);
     border: 4px solid #00c3ff;
@@ -42,6 +41,9 @@ body {
 }
 
 .task-container {
+    opacity: 0;
+    animation: pop-scaleY 0.2s ease-out 1s forwards;
+
     border: 1px solid #E5E5E5;
     height: 90%;
     width: 70%;
@@ -110,8 +112,16 @@ body {
 
 @keyframes pop-scaleY {
     0% {
-        opacity: 0;
+        opacity: .25;
+        transform: scaleY(0); 
+    }
+    50% {
+        opacity: .5;
         transform: scaleY(0.5); 
+    }
+    75% {
+        opacity: .75;
+        transform: scaleY(0.75); 
     }
     100% {
         opacity: 1;
