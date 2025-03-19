@@ -103,6 +103,9 @@ body {
     padding: 10px 20px;
     text-shadow: 0px 0px 10px #00C3FF; 
     transition: all .3 ease;  
+
+    font-weight: 600;
+    text-shadow: 0px 0px 10px #00C3FF;
 }
 
 .button button:hover {

@@ -103,6 +103,11 @@ body {
     transform: scale(.97);
 }
 
+tr button:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 @keyframes pop-scaleY {
     0% {
         opacity: .25;
@@ -121,3 +126,4 @@ body {
         transform: scaleY(1); 
     }
 }
+
