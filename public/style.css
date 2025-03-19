@@ -107,7 +107,8 @@ body {
 
 .button button:hover {
     background: #00C3FF;
-    box-shadow: 0px 0px 10px #00C3FF;   
+    box-shadow: 0px 0px 10px #00C3FF;  
+    transform: scale(.97); 
 }
 
 @keyframes pop-scaleY {
