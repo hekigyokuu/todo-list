@@ -1,6 +1,22 @@
 const express = require("express");
 const path = require("path");
 
+const { MongoClient } = requrie("mongodb");
+const uri = "mongodb://localhost:27017/"
+const client = new MongoClient(uri);
+
+async function connectDB() {
+    try {
+        await client.connect();
+        console.log("Connected to MongoDB");
+    } catch (error) {
+        console.error("Connection Failed", error);
+    }
+}
+
+connectDB();
+
+
 const port = 3000;
 
 // Should use sql or nosql databases instead of local object/dictionary (palitan siguro natin next time)
