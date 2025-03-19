@@ -68,3 +68,11 @@ function updatePoints(completed, amount, id) {
         .then(data => console.log(data.message))
         .catch(error => console.log(error));
 }
+
+window.addEventListener("load", function () {
+    setTimeout(() => {
+        let sound = new Audio("sfx/sfx.mp3");
+        sound.playbackRate = 1.5;
+        sound.play().catch(error => console.log("Audio play failed:", error));
+    }, 700)
+});

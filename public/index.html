@@ -21,9 +21,19 @@
                 <h3>Heading to the to-do list. Will you proceed?</h3>
             </div>
             <div class="button">
-                <button onclick="window.location.href = 'todo.html'"><h3>Proceed</h3></button>
+                <button onclick="window.location.href = 'todo.html'" id="acceptButton"><h3>Proceed</h3></button>
             </div>
         </div>
     </div>
+    
+    <script>
+        window.addEventListener("load", function () {
+        setTimeout(() => {
+            let sound = new Audio("sfx/sfx.mp3");
+            sound.playbackRate = 1.5;
+            sound.play().catch(error => console.log("Audio play failed:", error));
+        }, 700)
+        });
+    </script>
 </body>
 </html>
