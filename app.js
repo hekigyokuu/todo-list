@@ -28,34 +28,12 @@ app.use((req, res, next) => {
 
 
 app.get("/", async (req, res) => {
-    // Hardcode username (will be dynamic when implemented login/register system)
-    let username = "Jinwoo";
-
-    /*
-    req.session.user.username = username;
-    console.log("Welcome " + username);
-
-    // RECREATE USER DATA EVERY RESTART (For testing)
-    // Hardcoded data for testing
-    
-    const data = {
-        username: "Jinwoo",
-        points: 0,
-        tasks: {
-            "task1": { completed: false, reward: 5 },
-            "task2": { completed: false, reward: 10 }
-        }
-    }
-    await deleteData(client, "todolist", "todolist", {}, true); // Clear database
-    await insertData(client, "todolist", "todolist", data);     // Insert user to database
-    */
-
     if (req.session.user.username) {
-        res.redirect("index.html");
+        return res.redirect("index.html");
     }
-    else {
-        res.redirect("html/login.html");
-    }
+    
+    console.log("Redirecting to login.html");
+    return res.redirect("html/login.html");
 });
 
 app.use(express.static(path.join(__dirname, "public"))); // Allow access to static files from "public" folder
@@ -92,8 +70,7 @@ app.post("/register", async (req, res) => {
 
     if (password !== confirmation) {
         console.log("Registration Failed: Password confirmation failed."); 
-        res.redirect("html/register.html");
-        return;
+        return res.redirect("html/register.html");
     }
 
     
@@ -113,12 +90,11 @@ app.post("/register", async (req, res) => {
 
         await insertData(client, "todolist", "todolist", data);
 
-        res.redirect("html/login.html");
-        return;
+        return res.redirect("html/login.html");
     }
     
     console.log("User data already exist");
-    res.redirect("html/register.html");
+    return res.redirect("html/register.html");
 });
 
 app.get("/get-data", async (req, res) => {
@@ -127,11 +103,16 @@ app.get("/get-data", async (req, res) => {
     let userData = await getData(client, "todolist", "todolist", filter);
 
     if (userData && userData.length > 0) {
-        res.json(userData[0]);
-        return;
+        const data = {
+            username: userData[0].username,
+            points: userData[0].points,
+            tasks: userData[0].tasks
+        }
+
+        return res.json(data);
     } 
 
-    res.status(404).json({ message: "No data found for the user" });
+    return res.status(404).json({ message: "No data found for the user" });
 });
 
 app.post("/completed", async (req, res) => {
@@ -143,8 +124,7 @@ app.post("/completed", async (req, res) => {
     userData = userData[0];
 
     if (userData.tasks[id].completed) {
-        res.json({});
-        return;
+        return res.json({});
     }
     
     userData.points += userData.tasks[id].reward;
@@ -158,7 +138,10 @@ app.post("/completed", async (req, res) => {
     
     console.log("Data updated");
 
-    res.json(userData);
+    const data = {
+        points: userData.points
+    }
+    return res.json(data);
 });
 
 app.listen(port, (err) => {
