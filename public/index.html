@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="outer-container">
-        <div class="task-container">
+        <div id="task-container" class="task-container">
             <h2 id="username">Welcome, Player!</h2>
             <div class="points-container">
                 <h2>Points: <span id="points">0 pts</span></h2>
@@ -37,22 +37,24 @@
                 </tbody>
             </table>
             <div class="button">
-                <button><i class="fa-solid fa-plus white-icon"></i></button>
+                <button id="add-task"><i class="fa-solid fa-plus white-icon"></i></button>
                 <button onclick="window.location.href = 'html/login.html'">Go back</button>
             </div>
-
-            <div class="add-task-container">
+            <!--
+               <div class="add-task-container">
                 <h3>Adding a task to the system</h3>
-                <!--action="/add-task" method="post"-->
+                <!-/-action="/add-task" method="post"-/->
                 <form>
                     <input name="instruction" placeholder="Instruction" autocomplete="off" type="text">
                     <div class="button">
-                        <input name="add" value="add" type="submit">
+                        <input id="submit-task" name="add" value="add" type="submit">
                     </div>
                 </form>
-            </div>
+            </div>         
+            -->
         </div>
     </div>
     <script src="js/main.js"></script>
+    <script src="js/add-task.js"></script>
 </body>
 </html>
