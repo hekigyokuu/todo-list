@@ -56,6 +56,7 @@ app.post("/login", async (req, res) => {
 
     if (match) {
         req.session.user.username = username;
+        req.session.user.taskCount = Object.keys(userData[0].tasks).length;
 
         console.log("Success: " + username + " logged in.");
         return res.redirect("index.html");
@@ -150,6 +151,24 @@ app.post("/completed", async (req, res) => {
         points: userData.points
     }
     return res.json(data);
+});
+
+app.post("/add-task", async (req, res) => {
+    const { instruction } = req.body;
+    
+    req.session.user.tasksCount += 1;
+
+    const data = {
+        id: "task" + req.session.user.taskCount,
+        count: req.session.user.taskCount,
+        task: {
+            instruction: instruction,
+            completed: false,
+            reward: (Math.floor(Math.random() * 4) + 1) * 5,  // Randomize reward: 5, 10, 15, or 20
+        }
+    };
+
+    res.send(data)
 });
 
 app.listen(port, (err) => {
