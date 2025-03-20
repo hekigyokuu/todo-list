@@ -83,8 +83,16 @@ app.post("/register", async (req, res) => {
             password: hashedPassword,
             points: 0,
             tasks: {
-                "task1": { completed: false, reward: 5 },
-                "task2": { completed: false, reward: 10 }
+                "task1": { 
+                    instruction: "Drink water", 
+                    completed: false, 
+                    reward: 5 
+                },
+                "task2": { 
+                    instruction: "Walk 200 meters",
+                    completed: false, 
+                    reward: 10 
+                }
             }
         };
 
