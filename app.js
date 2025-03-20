@@ -132,6 +132,10 @@ app.post("/completed", async (req, res) => {
     let userData = await getData(client, "todolist", "todolist", filter);
     userData = userData[0];
 
+    if (userData.tasks[id] === undefined) {
+        return  res.json({});
+    }
+
     if (userData.tasks[id].completed) {
         return res.json({});
     }
@@ -156,7 +160,7 @@ app.post("/completed", async (req, res) => {
 app.post("/add-task", async (req, res) => {
     const { instruction } = req.body;
     
-    req.session.user.tasksCount += 1;
+    req.session.user.taskCount += 1;
 
     const data = {
         id: "task" + req.session.user.taskCount,

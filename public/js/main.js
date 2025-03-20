@@ -1,3 +1,4 @@
+// Handle data loading
 document.addEventListener("DOMContentLoaded", () => {
     // Handle complete button
     let taskIDs = {}
@@ -18,47 +19,95 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 insertTableRow(data.tasks[id], counter, id);
                 counter++;
-
-                /*
-                let completed = data.tasks[id].completed;
-
-                if (completed) {
-                    updateTable(id);            
-                    document.getElementById(id).disabled = true;
-                }
-                */
                 
-                document.getElementById(id).addEventListener("click", (event) => {
-                    console.log(id);
-
-                    let button = event.target;
-                    
-                    const data = {
-                        id: id
-                    }
-                
-                    const options = {
-                        method: "POST",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify(data)
-                    };
-
-                    fetch("/completed", options)
-                        .then(res => res.json())
-                        .then(data => { 
-                            console.log(data);
-                            if (data) {
-                                updatePoints(data.points);
-                                updateTable(id);
-                                button.disabled = true;
-                            }
-                        })
-                        .catch(error => console.log(error));
-                });
+                addTaskButtonEventListener(id);
             }
         })
         .catch(error => console.log(error));
 });
+
+// Handle add task
+document.getElementById("add-task").addEventListener("click", () => {
+    const taskContainer = document.getElementById("task-container");
+
+    const addTaskGui = document.createElement("div");
+    addTaskGui.className = "add-task-container"; 
+    addTaskGui.id = "add-task-container";
+    addTaskGui.innerHTML = `<h3>Adding a task to the system</h3>
+                                <form id="add-task-form">
+                                    <input name="instruction" placeholder="Instruction" autocomplete="off" type="text">
+                                        <div class="button">
+                                            <input id="submit-task" name="add" value="add" type="submit">
+                                        </div>
+                                </form>`;
+    
+    taskContainer.appendChild(addTaskGui);
+
+    document.getElementById("add-task-form").addEventListener("submit", (e) => {
+        e.preventDefault(); // Prevent page to reload when form was submitted 
+
+        const form = document.getElementById("add-task-form");
+        const formData = new FormData(form);
+
+        const jsonObject = Object.fromEntries(formData.entries());
+
+        const options = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(jsonObject)
+        }
+
+        fetch("/add-task", options)
+            .then(res => res.json())
+            .then(data => {
+                insertTableRow(data.task, data.count, data.id);
+            });
+
+        const addTaskGui = document.getElementById("add-task-container");
+        if (addTaskGui) {
+            addTaskGui.remove();
+        }
+
+    });
+});
+
+window.addEventListener("load", function () {
+    setTimeout(() => {
+        let sound = new Audio("../sfx/sfx.mp3");
+        sound.playbackRate = 1.5;
+        sound.play().catch(error => console.log("Audio play failed:", error));
+    }, 700)
+});
+
+function addTaskButtonEventListener(id) {
+    document.getElementById(id).addEventListener("click", (event) => {
+        console.log(id);
+
+        let button = event.target;
+        
+        const data = {
+            id: id
+        }
+    
+        const options = {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        };
+
+        fetch("/completed", options)
+            .then(res => res.json())
+            .then(data => { 
+                console.log(data);
+                if (data) {
+                    updatePoints(data.points);
+                    updateTable(id);
+                    button.disabled = true;
+                }
+            })
+            .catch(error => console.log(error));
+    });
+}
 
 function updatePoints(amount) {
     let pointsTextLabel = document.getElementById("points")
@@ -89,19 +138,12 @@ function insertTableRow(task, counter, id) {
     const button = document.createElement("button");
     button.disabled = task.completed ? true : false;
     button.setAttribute("id", id);
-
+    
     const checkIcon = document.createElement("i");
     checkIcon.className = "fa-solid fa-check white-icon"
 
     button.appendChild(checkIcon);
     completed.appendChild(button);
+
+    addTaskButtonEventListener(id);
 }
-
-window.addEventListener("load", function () {
-    setTimeout(() => {
-        let sound = new Audio("../sfx/sfx.mp3");
-        sound.playbackRate = 1.5;
-        sound.play().catch(error => console.log("Audio play failed:", error));
-    }, 700)
-});
-
