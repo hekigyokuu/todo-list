@@ -61,7 +61,7 @@ app.post("/login", async (req, res) => {
         return res.redirect("index.html");
     }
 
-    return res.redirect("index.html");
+    return res.redirect("html/login.html");
 });
 
 app.post("/register", async (req, res) => {
