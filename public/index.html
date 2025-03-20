@@ -4,49 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>???_todo_list</title>
-    <link rel="stylesheet" href="../css/todo.css">
+    
+    <link rel="stylesheet" href="css/todo.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <div class="outer-container">
         <div class="task-container">
-                <h2 id="username">Welcome, player</h2>
+            <h2 id="username">Welcome, Player!</h2>
             <div class="points-container">
                 <h2>Points: <span id="points">0 pts</span></h2>
             </div>
             <table class="task-manager">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th class="task-header">Tasks</th>
-                        <th class="task-header">Status</th>
-                        <th>Rewards</th>
-                        <th></th>
-                    </tr>
-                </thead>
                 <tbody id="task-body">
-                    <!--
                     <tr>
-                        <td>1</td>
+                        <td>Task 1:</td>
                         <td>Drink water</td>
                         <td>Incomplete</td>
                         <td>5pts</td>
-                        <td><button id="task1">Completed</button></td>
+                        <td><button id="task1"> <i class="fa-solid fa-check white-icon"></i></button></td>
                     </tr>
                     <tr>
-                        <td>2</td>
+                        <td>Task 2:</td>
                         <td>Walk 200 meters</td>
                         <td>Incomplete</td>
                         <td>10pts</td>
-                        <td><button id="task2">Completed</button></td>
+                        <td><button id="task2"> <i class="fa-solid fa-check white-icon"></i></button></td>
                     </tr>
-                    -->
                 </tbody>
             </table>
             <div class="button">
-                <button onclick="window.location.href = '../index.html'">Go back</button>
+                <button><i class="fa-solid fa-plus white-icon"></i></button>
+                <button onclick="window.location.href = 'html/login.html'">Go back</button>
             </div>
         </div>
     </div>
-    <script src="../js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

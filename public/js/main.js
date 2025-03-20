@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(taskIDs);
             
             let usernameTextLabel = document.getElementById("username");
-            usernameTextLabel.innerText = `Welcome, ${data.username}`;
+            usernameTextLabel.innerText = `Welcome, ${data.username}!`;
             updatePoints(data.points);
 
             let counter = 1;
