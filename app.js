@@ -44,6 +44,9 @@ app.get("/", async (req, res) => {
 app.use(express.static(path.join(__dirname, "public"))); // Allow access to static files from "public" folder
 app.use(express.json()); // Parse incoming JSON data from client
 
+app.get("/login", (req, res) => {
+    
+});
 
 app.get("/get-data", async (req, res) => {
     let filter = { username: req.session.user.username };
