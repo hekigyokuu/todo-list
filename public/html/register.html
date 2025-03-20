@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
     <title>Login</title>
     <!-- Temporary CSS, remove when styled/styling -->
     <style>
@@ -39,17 +40,20 @@
 </head>
 <body>
     <div class="form-container">
-        <h1>Login</h1>
-        <form action="/login" method="post">
+        <h1>Register</h1>
+        <form action="/register" method="post">
             <div class="input-field">
                 <input name="username" placeholder="Username" type="text">
             </div>
             <div class="input-field">
                 <input name="password" placeholder="Password" type="password">
             </div>
+            <div class="input-field">
+                <input name="confirmation" placeholder="Confirm Password" type="password">
+            </div>
             <input name="login" value="login" type="submit">
         </form>
-        <p>Don't have an account? <a href="register.html">Register</a></p>
+        <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
 </body>
 </html>

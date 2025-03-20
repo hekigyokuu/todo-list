@@ -22,6 +22,8 @@ app.get("/", async (req, res) => {
     // Hardcode username (will be dynamic when implemented login/register system)
     let username = "Jinwoo";
     req.session.user = {};
+
+    
     req.session.user.username = username;
     console.log("Welcome " + username);
 
@@ -37,16 +39,26 @@ app.get("/", async (req, res) => {
     }
     await deleteData(client, "todolist", "todolist", {}, true); // Clear database
     await insertData(client, "todolist", "todolist", data);     // Insert user to database
+    
 
-    res.redirect("index.html");
+    if (req.session.user.username) {
+        res.redirect("index.html");
+    }
+    else {
+        res.redirect("html/login.html");
+    }
 });
 
 app.use(express.static(path.join(__dirname, "public"))); // Allow access to static files from "public" folder
 app.use(express.json()); // Parse incoming JSON data from client
 
-app.get("/login", (req, res) => {
-    
+app.post("/login", (req, res) => {
+    res.redirect("index.html");
 });
+
+app.post("/register", (req, res) => {
+    res.redirect("html/login.html");
+})
 
 app.get("/get-data", async (req, res) => {
     let filter = { username: req.session.user.username };
