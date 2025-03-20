@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 
-app.get(["/", "/index.html", "/html/todo.html"], async (req, res, next) => {
+app.get(["/", "/index.html"], async (req, res, next) => {
     if (req.session.user.username) {
         return next();
     }
@@ -35,7 +35,6 @@ app.get(["/", "/index.html", "/html/todo.html"], async (req, res, next) => {
     console.log("Redirecting to login.html");
     return res.redirect("/html/login.html");
 });
-
 
 app.use(express.static(path.join(__dirname, "public"))); // Allow access to static files from "public" folder
 app.use(express.urlencoded({ extended: true })); // Parse form data from client   
