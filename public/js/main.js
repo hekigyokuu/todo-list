@@ -37,7 +37,7 @@ document.getElementById("add-task").addEventListener("click", () => {
                                 <form id="add-task-form">
                                     <input name="instruction" placeholder="Instruction" autocomplete="off" type="text">
                                         <div class="button">
-                                            <input id="submit-task" name="add" value="add" type="submit">
+                                            <input id="submit-task" name="add" value="Add" type="submit">
                                         </div>
                                 </form>`;
     

@@ -162,17 +162,36 @@ app.post("/add-task", async (req, res) => {
     
     req.session.user.taskCount += 1;
 
-    const data = {
-        id: "task" + req.session.user.taskCount,
+    // Update data on the database
+    const taskId = "task" + req.session.user.taskCount;
+    const taskReward = (Math.floor(Math.random() * 4) + 1) * 5;  // Randomize reward: 5, 10, 15, or 20
+
+    const filter = { username: req.session.user.username };
+
+    let userData = await getData(client, "todolist", "todolist", filter);
+    userData = userData[0];
+
+    userData.tasks[taskId] = {
+        instruction: instruction,
+        completed: false,
+        reward: taskReward
+    }
+
+    const update = { $set: { tasks: userData.tasks } };
+    await updateData(client, "todolist", "todolist", filter, update);
+
+    // Send data to client
+    const clientData = {
+        id: taskId,
         count: req.session.user.taskCount,
         task: {
             instruction: instruction,
             completed: false,
-            reward: (Math.floor(Math.random() * 4) + 1) * 5,  // Randomize reward: 5, 10, 15, or 20
+            reward: taskReward
         }
     };
 
-    res.send(data)
+    res.send(clientData)
 });
 
 app.listen(port, (err) => {
