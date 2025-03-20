@@ -97,6 +97,10 @@ function insertTableRow(task, counter, id) {
     completed.appendChild(button);
 }
 
+function displayTaskAdder() {
+
+}
+
 window.addEventListener("load", function () {
     setTimeout(() => {
         let sound = new Audio("../sfx/sfx.mp3");
