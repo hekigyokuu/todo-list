@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>???_register</title>
+
+    <link rel="stylesheet" href="../css/form.css">
+</head>
+<body>
+    <div class="outer-container">
+        <div class="form-container">
+            <div class="notification">
+                <div class="notif-logo">
+                    <h1>!</h1>
+                </div>
+                <div class="notif-header">
+                    <h1>REGISTER</h1>
+                </div>
+            </div>
+            <form action="/register" method="post">
+                <div class="input-field">
+                    <input name="username" placeholder="username" type="text">
+                    <input name="password" placeholder="password" type="password">
+                    <input name="confirmation" placeholder="confirm password" type="password">
+                    <br>
+                </div>
+                <div class="button-field">
+                    <input name="register" value="Register" type="submit" class="button">
+                </div>
+            </form>
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener("load", function () {
+        setTimeout(() => {
+            let sound = new Audio("../sfx/sfx.mp3");
+            sound.playbackRate = 1.5;
+            sound.play().catch(error => console.log("Audio play failed:", error));
+        }, 700)
+        });
+    </script>
+</body>
+</html>

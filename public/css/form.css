@@ -40,7 +40,7 @@ body {
     align-items: center;
 }
 
-.task-container {
+.form-container {
     opacity: 0;
     animation: pop-scaleY 0.2s ease-out 1s forwards;
 
@@ -88,27 +88,60 @@ body {
     text-shadow: 0px 0px 10px #00C3FF;
 }
 
-.content {
-    letter-spacing: 1px;
+form {
+    height: 55%;
+    width: 60%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.content h3 {
-    font-weight: 600;
-    text-shadow: 0px 0px 10px #00C3FF;
+form .input-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.button button {
+form .input-field input {
+    background: var(--button-bg);
+    border: 1px solid #e5e5e5;
+
+    width: 100%;
+    padding: 10px 5px;
+    margin-bottom: 10px;
+}
+
+form .button-field {
+    display: flex;
+    justify-content: space-around;
+}
+
+.button {
     background: var(--button-bg);    
     border: 1px solid #e5e5e5;
     padding: 10px 20px;
     text-shadow: 0px 0px 10px #00C3FF; 
     transition: all .3 ease;  
+
+    font-weight: 600;
+    text-shadow: 0px 0px 10px #00C3FF;
 }
 
-.button button:hover {
+.button:hover {
     background: #00C3FF;
     box-shadow: 0px 0px 10px #00C3FF;  
     transform: scale(.97); 
+}
+
+.form-container p {
+    letter-spacing: 1px;
+    text-shadow: 0px 0px 10px #00C3FF;
+}
+
+.form-container p a {
+    font-weight: 600;
+    text-decoration: none;
 }
 
 @keyframes pop-scaleY {
