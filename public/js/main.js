@@ -81,16 +81,19 @@ function insertTableRow(task, counter, id) {
     const reward = row.insertCell(3);
     const completed = row.insertCell(4);
 
-    no.textContent = counter;
+    no.textContent = "Task " + counter + ":";
     instruction.textContent = task.instruction;
     status.textContent = task.completed ? "Completed" : "Incomplete";
-    reward.textContent = task.reward;
+    reward.textContent = `+${task.reward}pts`;
 
     const button = document.createElement("button");
-    button.textContent = "Completed";
     button.disabled = task.completed ? true : false;
     button.setAttribute("id", id);
 
+    const checkIcon = document.createElement("i");
+    checkIcon.className = "fa-solid fa-check white-icon"
+
+    button.appendChild(checkIcon);
     completed.appendChild(button);
 }
 
