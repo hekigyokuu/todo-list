@@ -19,10 +19,17 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.use((req, res, next) => {
+    if (!req.session.user) {
+        req.session.user = {};  // Default empty session data
+    }
+    next();
+});
+
+
 app.get("/", async (req, res) => {
     // Hardcode username (will be dynamic when implemented login/register system)
     let username = "Jinwoo";
-    req.session.user = {};
 
     /*
     req.session.user.username = username;
@@ -55,8 +62,28 @@ app.use(express.static(path.join(__dirname, "public"))); // Allow access to stat
 app.use(express.urlencoded({ extended: true })); // Parse form data from client   
 app.use(express.json()); // Parse JSON data from client
 
-app.post("/login", (req, res) => {
-    res.redirect("index.html");
+app.post("/login", async (req, res) => {
+    const {username, password } = req.body;
+
+    req.session.user = {};
+    const userData = await getData(client, "todolist", "todolist", { username: username });
+
+    if (userData.length === 0) {
+        console.log("Login Failed: User not found.");
+        return res.redirect("html/login.html");
+    }
+
+    const hashedPassword = userData[0].password;
+    const match = await bcrypt.compare(password, hashedPassword);
+
+    if (match) {
+        req.session.user.username = username;
+
+        console.log("Success: " + username + " logged in.");
+        return res.redirect("index.html");
+    }
+
+    return res.redirect("index.html");
 });
 
 app.post("/register", async (req, res) => {
@@ -77,6 +104,7 @@ app.post("/register", async (req, res) => {
         const data = {
             username: username,
             password: hashedPassword,
+            points: 0,
             tasks: {
                 "task1": { completed: false, reward: 5 },
                 "task2": { completed: false, reward: 10 }
@@ -107,8 +135,7 @@ app.get("/get-data", async (req, res) => {
 });
 
 app.post("/completed", async (req, res) => {
-    const data = req.body;
-    const id = data.id;
+    const { id } = req.body;
 
     let filter = { username: req.session.user.username };
 
