@@ -99,7 +99,7 @@ function addTaskButtonEventListener(id) {
             .then(res => res.json())
             .then(data => { 
                 console.log(data);
-                if (data) {
+                if (Object.keys(data).length > 0) {
                     updatePoints(data.points);
                     updateTable(id);
                     button.disabled = true;

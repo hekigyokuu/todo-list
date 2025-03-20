@@ -132,19 +132,15 @@ app.post("/completed", async (req, res) => {
     let userData = await getData(client, "todolist", "todolist", filter);
     userData = userData[0];
 
-    if (userData.tasks[id] === undefined) {
-        return  res.json({});
-    }
-
     if (userData.tasks[id].completed) {
         return res.json({});
     }
     
     userData.points += userData.tasks[id].reward;
-    userData.tasks[id].completed = true;
+    //userData.tasks[id].completed = true;
 
     let update = { 
-        $set: { points: userData.points, tasks: userData.tasks}
+        $set: { points: userData.points, [`tasks.${id}.completed`]: true }
     };
 
     await updateData(client, "todolist", "todolist", filter, update);
@@ -199,3 +195,4 @@ app.listen(port, (err) => {
 
     console.log("port: " + port);
 })
+ 
