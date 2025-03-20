@@ -27,14 +27,15 @@ app.use((req, res, next) => {
 });
 
 
-app.get("/", async (req, res) => {
+app.get(["/", "/index.html", "/html/todo.html"], async (req, res, next) => {
     if (req.session.user.username) {
-        return res.redirect("index.html");
+        return next();
     }
     
     console.log("Redirecting to login.html");
-    return res.redirect("html/login.html");
+    return res.redirect("/html/login.html");
 });
+
 
 app.use(express.static(path.join(__dirname, "public"))); // Allow access to static files from "public" folder
 app.use(express.urlencoded({ extended: true })); // Parse form data from client   
@@ -48,7 +49,7 @@ app.post("/login", async (req, res) => {
 
     if (userData.length === 0) {
         console.log("Login Failed: User not found.");
-        return res.redirect("html/login.html");
+        return res.redirect("/html/login.html");
     }
 
     const hashedPassword = userData[0].password;
@@ -61,7 +62,7 @@ app.post("/login", async (req, res) => {
         return res.redirect("index.html");
     }
 
-    return res.redirect("html/login.html");
+    return res.redirect("/html/login.html");
 });
 
 app.post("/register", async (req, res) => {
@@ -70,7 +71,7 @@ app.post("/register", async (req, res) => {
 
     if (password !== confirmation) {
         console.log("Registration Failed: Password confirmation failed."); 
-        return res.redirect("html/register.html");
+        return res.redirect("/html/register.html");
     }
 
     
@@ -90,11 +91,11 @@ app.post("/register", async (req, res) => {
 
         await insertData(client, "todolist", "todolist", data);
 
-        return res.redirect("html/login.html");
+        return res.redirect("/html/login.html");
     }
     
     console.log("User data already exist");
-    return res.redirect("html/register.html");
+    return res.redirect("/html/register.html");
 });
 
 app.get("/get-data", async (req, res) => {
