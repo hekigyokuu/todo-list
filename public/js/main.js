@@ -6,24 +6,26 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("/get-data")
         .then(res => res.json())
         .then(data => {
-            taskIDs = Object.keys(data.tasks);
-            console.log(taskIDs);
-            
-            let usernameTextLabel = document.getElementById("username");
-            usernameTextLabel.innerText = `Welcome, ${data.username}!`;
-            updatePoints(data.points);
-
-            let counter = 1;
-            for (let id of taskIDs) {
-                console.log(id);
-
-                insertTableRow(data.tasks[id], counter, id);
-                counter++;
+            if (data.success) {
+                taskIDs = Object.keys(data.tasks);
+                console.log(taskIDs);
                 
-                completeTaskEventListener(id);
+                let usernameTextLabel = document.getElementById("username");
+                usernameTextLabel.innerText = `Welcome, ${data.username}!`;
+                updatePoints(data.points);
+
+                let counter = 1;
+                for (let id of taskIDs) {
+                    console.log(id);
+
+                    insertTableRow(data.tasks[id], counter, id);
+                    counter++;
+                }
+                return;
             }
+            console.log("Error: No data found.")
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error))                
 });
 
 // Handles add task action
@@ -128,9 +130,7 @@ function completeTaskEventListener(id) {
 
         let button = event.target;
         
-        const data = {
-            id: id
-        }
+        const data = { id: id }
     
         const options = {
             method: "POST",
@@ -138,7 +138,7 @@ function completeTaskEventListener(id) {
             body: JSON.stringify(data)
         };
 
-        fetch("/completed", options)
+        fetch("/complete-task", options)
             .then(res => res.json())
             .then(data => { 
                 console.log(data);
@@ -146,6 +146,32 @@ function completeTaskEventListener(id) {
                     updatePoints(data.points);
                     updateTable(id);
                     button.disabled = true;
+                }
+            })
+            .catch(error => console.log(error));
+    });
+}
+
+function removeTaskEventListener(id) {
+    document.getElementById(id).addEventListener("click", (event) => {
+        console.log(id);
+
+        let icon = event.target;
+        
+        const data = { id: id }
+    
+        const options = {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        };
+
+        fetch("/remove-task", options)
+            .then(res => res.json())
+            .then(data => { 
+                console.log(data);
+                if (data.removed) {
+                    removeTableRow(icon);
                 }
             })
             .catch(error => console.log(error));
@@ -171,7 +197,7 @@ function insertTableRow(task, counter, id) {
     const instruction = row.insertCell(1);
     const status = row.insertCell(2);
     const reward = row.insertCell(3);
-    const completed = row.insertCell(4);
+    const complete = row.insertCell(4);
     const remove = row.insertCell(5);
 
     no.textContent = "Task " + counter + ":";
@@ -180,27 +206,37 @@ function insertTableRow(task, counter, id) {
     reward.textContent = `+${task.reward}pts`;
 
     // Complete button
+    const completeId = `complete-${id}`;
     const completeButton = document.createElement("button");
     completeButton.disabled = task.completed ? true : false;
-    completeButton.setAttribute("id", id);
-    
+    completeButton.setAttribute("id", completeId);
+
     const checkIcon = document.createElement("i");
     checkIcon.className = "fa-solid fa-check white-icon"
-
     completeButton.appendChild(checkIcon);
-    completed.appendChild(completeButton);
+    complete.appendChild(completeButton);
 
     // Remove button
+    const removeId = `remove-${id}`;
     const xIcon = document.createElement("i");
     xIcon.className = "fa-solid fa-xmark";
-
+    xIcon.setAttribute("id", removeId);
     remove.appendChild(xIcon);
 
-    completeTaskEventListener(id);
-    //removeTaskEventListener(id);
+    completeTaskEventListener(completeId);
+    removeTaskEventListener(removeId);
+}
+
+function removeTableRow(icon) {
+    const tr = icon.closest("tr");
+
+    if (tr) {
+        tr.remove();
+    }
 }
 
 function clearTable() {
     const tbody = document.getElementById("task-body");
     tbody.innerHTML = "";
 }
+

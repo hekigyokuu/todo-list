@@ -110,29 +110,34 @@ app.get("/get-data", async (req, res) => {
     let filter = { username: req.session.user.username };
 
     let userData = await getData(client, "todolist", "todolist", filter);
+    userData = userData[0];
 
-    if (userData && userData.length > 0) {
+    if (userData && Object.keys(userData).length > 0) {
         const data = {
-            username: userData[0].username,
-            points: userData[0].points,
-            tasks: userData[0].tasks
+            success: true,
+            username: userData.username,
+            points: userData.points,
+            tasks: userData.tasks
         }
 
         return res.json(data);
     } 
 
-    return res.status(404).json({ message: "No data found for the user" });
+    return res.json({ success: false });
 });
 
-app.post("/completed", async (req, res) => {
-    const { id } = req.body;
+app.post("/complete-task", async (req, res) => {
+    let { id } = req.body;
+    id = id.replace("complete-", "");
 
     let filter = { username: req.session.user.username };
 
     let userData = await getData(client, "todolist", "todolist", filter);
     userData = userData[0];
 
-    if (userData.tasks[id].completed) {
+    const validTask = Object.keys(userData.tasks).includes(id);
+
+    if (!validTask || userData.tasks[id].completed) {
         return res.json({});
     }
     
@@ -140,17 +145,43 @@ app.post("/completed", async (req, res) => {
     //userData.tasks[id].completed = true;
 
     let update = { 
-        $set: { points: userData.points, [`tasks.${id}.completed`]: true }
+        $set: { 
+            points: userData.points, 
+            [`tasks.${id}.completed`]: true 
+        }
+    };
+
+    await updateData(client, "todolist", "todolist", filter, update);
+    
+    const data = { points: userData.points }
+    return res.json(data);
+});
+
+app.post("/remove-task", async (req, res) => {
+    let { id } = req.body;
+    id = id.replace("remove-", "");
+    console.log(id);
+    
+    let filter = { username: req.session.user.username };
+
+    let userData = await getData(client, "todolist", "todolist", filter);
+    userData = userData[0];
+
+    const validTask = Object.keys(userData.tasks).includes(id);
+
+    if (!validTask) {
+        return res.json({});
+    }
+    
+    let update = { 
+        $unset: { [`tasks.${id}`]: true } 
     };
 
     await updateData(client, "todolist", "todolist", filter, update);
     
     console.log("Data updated");
 
-    const data = {
-        points: userData.points
-    }
-    return res.json(data);
+    return res.json( {removed: true });
 });
 
 app.post("/add-task", async (req, res) => {
