@@ -1,6 +1,11 @@
 ## System-based To-Do List
 A to-do list with a point system.
 
+## Features
+1. **Login and Account Creation**
+2. **Task Management:** Add, remove, and clear tasks.
+3. **Points System:** View and earn points for completing tasks.
+  
 ### Files:
 - **`public/`** - Contains static files for the front-end.
   - **`index.html`** - Default entry point (root of `public/`).
