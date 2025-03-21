@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 insertTableRow(data.tasks[id], counter, id);
                 counter++;
                 
-                addTaskButtonEventListener(id);
+                completeTaskEventListener(id);
             }
         })
         .catch(error => console.log(error));
@@ -78,7 +78,7 @@ document.getElementById("clear-task").addEventListener("click", () => {
     addTaskGui.id = "add-task-container";
     addTaskGui.innerHTML = `<h3>Are you sure you want to clear all task?</h3>
                                 <form id="clear-task-form">
-                                        <div class="button">
+                                        <div class="button clear-task-button">
                                             <input name="action" value="yes" type="submit">
                                         </div>
                                         <div class="button">
@@ -122,7 +122,7 @@ window.addEventListener("load", function () {
     }, 700)
 });
 
-function addTaskButtonEventListener(id) {
+function completeTaskEventListener(id) {
     document.getElementById(id).addEventListener("click", (event) => {
         console.log(id);
 
@@ -172,23 +172,32 @@ function insertTableRow(task, counter, id) {
     const status = row.insertCell(2);
     const reward = row.insertCell(3);
     const completed = row.insertCell(4);
+    const remove = row.insertCell(5);
 
     no.textContent = "Task " + counter + ":";
     instruction.textContent = task.instruction;
     status.textContent = task.completed ? "Completed" : "Incomplete";
     reward.textContent = `+${task.reward}pts`;
 
-    const button = document.createElement("button");
-    button.disabled = task.completed ? true : false;
-    button.setAttribute("id", id);
+    // Complete button
+    const completeButton = document.createElement("button");
+    completeButton.disabled = task.completed ? true : false;
+    completeButton.setAttribute("id", id);
     
     const checkIcon = document.createElement("i");
     checkIcon.className = "fa-solid fa-check white-icon"
 
-    button.appendChild(checkIcon);
-    completed.appendChild(button);
+    completeButton.appendChild(checkIcon);
+    completed.appendChild(completeButton);
 
-    addTaskButtonEventListener(id);
+    // Remove button
+    const xIcon = document.createElement("i");
+    xIcon.className = "fa-solid fa-xmark";
+
+    remove.appendChild(xIcon);
+
+    completeTaskEventListener(id);
+    //removeTaskEventListener(id);
 }
 
 function clearTable() {
