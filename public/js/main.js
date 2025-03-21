@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.log(error));
 });
 
-// Handle add task
+// Handles add task action
 document.getElementById("add-task").addEventListener("click", () => {
     const taskContainer = document.getElementById("task-container");
 
@@ -37,7 +37,7 @@ document.getElementById("add-task").addEventListener("click", () => {
                                 <form id="add-task-form">
                                     <input name="instruction" placeholder="Instruction" autocomplete="off" type="text">
                                         <div class="button">
-                                            <input id="submit-task" name="add" value="Add" type="submit">
+                                            <input name="add" value="Add" type="submit">
                                         </div>
                                 </form>`;
     
@@ -46,9 +46,7 @@ document.getElementById("add-task").addEventListener("click", () => {
     document.getElementById("add-task-form").addEventListener("submit", (e) => {
         e.preventDefault(); // Prevent page to reload when form was submitted 
 
-        const form = document.getElementById("add-task-form");
-        const formData = new FormData(form);
-
+        const formData = new FormData(e.target);
         const jsonObject = Object.fromEntries(formData.entries());
 
         const options = {
@@ -68,6 +66,51 @@ document.getElementById("add-task").addEventListener("click", () => {
             addTaskGui.remove();
         }
 
+    });
+});
+
+// Handles clear all action
+document.getElementById("clear-task").addEventListener("click", () => {
+    const taskContainer = document.getElementById("task-container");
+
+    const addTaskGui = document.createElement("div");
+    addTaskGui.className = "add-task-container"; 
+    addTaskGui.id = "add-task-container";
+    addTaskGui.innerHTML = `<h3>Are you sure you want to clear all task?</h3>
+                                <form id="clear-task-form">
+                                        <div class="button">
+                                            <input name="action" value="yes" type="submit">
+                                        </div>
+                                        <div class="button">
+                                            <input name="action" value="no" type="submit">
+                                        </div>
+                                </form>`;
+    
+    taskContainer.appendChild(addTaskGui);
+
+    document.getElementById("clear-task-form").addEventListener("submit", (e) => {
+        e.preventDefault(); // Prevent page to reload when form was submitted 
+
+        const action = e.submitter.value;
+
+        const options = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action })
+        }
+
+        fetch("/clear-task", options)
+            .then(res => res.json())
+            .then(data => {
+                if (data.cleared) {
+                    clearTable();
+                }
+            });
+
+        const addTaskGui = document.getElementById("add-task-container");
+        if (addTaskGui) {
+            addTaskGui.remove();
+        }
     });
 });
 
@@ -146,4 +189,9 @@ function insertTableRow(task, counter, id) {
     completed.appendChild(button);
 
     addTaskButtonEventListener(id);
+}
+
+function clearTable() {
+    const tbody = document.getElementById("task-body");
+    tbody.innerHTML = "";
 }

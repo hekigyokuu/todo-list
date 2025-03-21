@@ -190,6 +190,22 @@ app.post("/add-task", async (req, res) => {
     res.send(clientData)
 });
 
+app.post("/clear-task", async (req, res) => {
+    const action = req.body.action;
+        
+    if (action === "yes") {
+        req.session.user.taskCount = 0;
+        
+        const filter = { username: req.session.user.username };
+        const update = { $set: {tasks: {} } };
+
+        await updateData(client, "todolist", "todolist", filter, update);
+        return res.json({cleared: true });
+    }
+
+    return res.json({cleared: false });
+});
+
 app.listen(port, (err) => {
     if (err) console.log("Bruh");
 
