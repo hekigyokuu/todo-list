@@ -125,10 +125,10 @@ window.addEventListener("load", function () {
 });
 
 function completeTaskEventListener(id) {
-    document.getElementById(id).addEventListener("click", (event) => {
+    document.getElementById(id).addEventListener("click", () => {
         console.log(id);
 
-        let button = event.target;
+        const button = document.getElementById(id);
         
         const data = { id: id }
     
@@ -141,8 +141,7 @@ function completeTaskEventListener(id) {
         fetch("/complete-task", options)
             .then(res => res.json())
             .then(data => { 
-                console.log(data);
-                if (Object.keys(data).length > 0) {
+                if (data.success) {
                     updatePoints(data.points);
                     updateTable(id);
                     button.disabled = true;

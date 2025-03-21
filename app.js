@@ -138,7 +138,7 @@ app.post("/complete-task", async (req, res) => {
     const validTask = Object.keys(userData.tasks).includes(id);
 
     if (!validTask || userData.tasks[id].completed) {
-        return res.json({});
+        return res.json({ success: false });
     }
     
     userData.points += userData.tasks[id].reward;
@@ -153,7 +153,7 @@ app.post("/complete-task", async (req, res) => {
 
     await updateData(client, "todolist", "todolist", filter, update);
     
-    const data = { points: userData.points }
+    const data = { success: true, points: userData.points }
     return res.json(data);
 });
 
@@ -172,7 +172,7 @@ app.post("/remove-task", async (req, res) => {
     if (!validTask) {
         return res.json({});
     }
-    
+
     let update = { 
         $unset: { [`tasks.${id}`]: true } 
     };
