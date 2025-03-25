@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(taskIDs);
                 
                 let usernameTextLabel = document.getElementById("username");
-                usernameTextLabel.innerText = `Welcome, ${data.username}!`;
+                usernameTextLabel.innerText = `userStatus(${data.username})`;
                 updatePoints(data.points);
 
                 let counter = 1;
@@ -35,13 +35,13 @@ document.getElementById("add-task").addEventListener("click", () => {
     const addTaskGui = document.createElement("div");
     addTaskGui.className = "add-task-container"; 
     addTaskGui.id = "add-task-container";
-    addTaskGui.innerHTML = `<h3>Adding a task to the system</h3>
-                                <form id="add-task-form">
-                                    <input name="instruction" placeholder="Instruction" autocomplete="off" type="text">
-                                        <div class="button">
-                                            <input name="add" value="Add" type="submit">
-                                        </div>
-                                </form>`;
+    addTaskGui.innerHTML = `<h3>System: Add task?</h3>
+                            <form id="add-task-form">
+                                <input name="instruction" placeholder="add new task" autocomplete="off" autofocus type="text">
+                                    <div class="button">
+                                        <input name="add" value="Add" type="submit">
+                                    </div>
+                            </form>`;
     
     taskContainer.appendChild(addTaskGui);
 
@@ -78,12 +78,10 @@ document.getElementById("clear-task").addEventListener("click", () => {
     const addTaskGui = document.createElement("div");
     addTaskGui.className = "add-task-container"; 
     addTaskGui.id = "add-task-container";
-    addTaskGui.innerHTML = `<h3>Are you sure you want to clear all task?</h3>
+    addTaskGui.innerHTML = `<h3>System: Clear all?</h3>
                                 <form id="clear-task-form">
                                         <div class="button clear-task-button">
                                             <input name="action" value="yes" type="submit">
-                                        </div>
-                                        <div class="button">
                                             <input name="action" value="no" type="submit">
                                         </div>
                                 </form>`;
@@ -179,7 +177,7 @@ function removeTaskEventListener(id) {
 
 function updatePoints(amount) {
     let pointsTextLabel = document.getElementById("points")
-    pointsTextLabel.innerText = `${amount} pts`;
+    pointsTextLabel.innerText = amount;
 }
 
 function updateTable(id) {
@@ -199,10 +197,10 @@ function insertTableRow(task, counter, id) {
     const complete = row.insertCell(4);
     const remove = row.insertCell(5);
 
-    no.textContent = "Task " + counter + ":";
+    no.textContent = counter + ":";
     instruction.textContent = task.instruction;
-    status.textContent = task.completed ? "Completed" : "Incomplete";
-    reward.textContent = `+${task.reward}pts`;
+    status.textContent = task.completed ? "Completed" : "Pending";
+    reward.textContent = `??pts`;
 
     // Complete button
     const completeId = `complete-${id}`;

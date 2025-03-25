@@ -40,7 +40,7 @@ async function updateData(client, dbName, collectionName, filter, update) {
         const collection = database.collection(collectionName);
         await collection.updateOne(filter, update);
 
-        console.log("Sucess: Data was updated.")
+        console.log("Success: Data was updated.")
     } catch (error) {
         console.log("Failed: Data was not updated.");
     }
@@ -58,7 +58,7 @@ async function deleteData(client, dbName, collectionName, filter, many) {
             collection.deleteOne(filter);
         }
 
-        console.log("Sucess: Data was deleted.")
+        console.log("Success: Data was deleted.")
     } catch (error) {
         console.log("Failed: Data was not deleted.");
     }
